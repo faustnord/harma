@@ -1,0 +1,38 @@
+.color-select {
+    position: relative;
+    outline: none;
+
+    &__options {
+        position: absolute;
+        display: flex;
+        background-color: $white;
+        border-radius: 12px;
+        margin-top: 8px;
+        z-index: 2;
+        max-height: 160px;
+        overflow-y: auto;
+        color: $gray-150;
+        padding: 8px 4px;
+        @include regular-14;
+        border: 2px solid $gray-20;
+    }
+
+    &__color {
+        width: 28px;
+        height: 28px;
+        border-radius: 14px;
+        margin: 0 4px;
+        cursor: pointer;
+
+        &:hover {
+            border: 2px solid $gray-70;
+        }
+    }
+}
+
+@media screen and (max-width: 719px) {
+    .color-select__options {
+        bottom: 0;
+        margin-bottom: 44px;
+    }
+}

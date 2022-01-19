@@ -1,0 +1,237 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+        "Color": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Color"
+        },
+        "NoteItem": {
+            "$ref": "#/definitions/NoteItem"
+        },
+        "NoteType": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/NoteType"
+        },
+        "Note": {
+            "$ref": "#/definitions/Note"
+        },
+        "Tag": {
+            "$ref": "#/definitions/Tag"
+        },
+        "User": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/User"
+        }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "definitions": {
+        "Color": {
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "CreatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "UpdatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Color": {
+                    "type": "string"
+                },
+                "TextColor": {
+                    "type": "string"
+                },
+                "Notes": {
+                    "items": {
+                        "$schema": "http://json-schema.org/draft-04/schema#",
+                        "$ref": "#/definitions/Note"
+                    },
+                    "type": "array"
+                },
+                "Tags": {
+                    "items": {
+                        "$ref": "#/definitions/Tag"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object"
+        },
+        "Note": {
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "CreatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "UpdatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "Header": {
+                    "type": "string"
+                },
+                "Text": {
+                    "type": "string"
+                },
+                "ColorID": {
+                    "type": "integer"
+                },
+                "Color": {
+                    "$ref": "#/definitions/Color"
+                },
+                "UserID": {
+                    "type": "integer"
+                },
+                "Pinned": {
+                    "type": "boolean"
+                },
+                "Archived": {
+                    "type": "boolean"
+                },
+                "NoteItems": {
+                    "items": {
+                        "$schema": "http://json-schema.org/draft-04/schema#",
+                        "$ref": "#/definitions/NoteItem"
+                    },
+                    "type": "array"
+                },
+                "Tags": {
+                    "items": {
+                        "$schema": "http://json-schema.org/draft-04/schema#",
+                        "$ref": "#/definitions/Tag"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object"
+        },
+        "NoteItem": {
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "CreatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "UpdatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "Text": {
+                    "type": "string"
+                },
+                "Done": {
+                    "type": "boolean"
+                },
+                "Position": {
+                    "type": "integer"
+                },
+                "NoteID": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object"
+        },
+        "NoteType": {
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "CreatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "UpdatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "Name": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object"
+        },
+        "Tag": {
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "CreatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "UpdatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Icon": {
+                    "type": "string"
+                },
+                "ColorID": {
+                    "type": "integer"
+                },
+                "Notes": {
+                    "items": {
+                        "$ref": "#/definitions/Note"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object"
+        },
+        "User": {
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "CreatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "UpdatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Surname": {
+                    "type": "string"
+                },
+                "Email": {
+                    "type": "string"
+                },
+                "Password": {
+                    "type": "string"
+                },
+                "Notes": {
+                    "items": {
+                        "$ref": "#/definitions/Note"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object"
+        }
+    }
+}

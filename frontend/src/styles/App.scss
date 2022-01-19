@@ -1,0 +1,73 @@
+@import 'basis';
+@import 'atoms';
+@import 'molecules';
+@import 'organisms';
+@import 'pages';
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.body {
+    width: 100%;
+    display: flex;
+}
+.header {
+    display: flex;
+    margin-bottom: 12px;
+    width: calc(1120px / 2 - 16px);
+
+    & .button {
+        margin-left: 12px;
+    }
+}
+
+.main {
+    background: $white;
+    width: calc(100% - 240px);
+    margin-left: 240px;
+    height: 100vh;
+    padding: 24px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (max-width: 1439px) {
+    .header {
+        width: calc((100vw - 336px) / 2 - 8px);
+    }
+}
+
+@media screen and (max-width: 1199px) {
+    .main {
+        width: 100%;
+        margin-left: 0px;
+        padding: 24px;
+    }
+
+    .header {
+        width: calc(100vw - 60px);
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 719px) {
+    .main {
+        width: 100%;
+        margin-left: 0px;
+        padding: 24px 6px;
+    }
+
+    .header {
+        width: calc(100vw - 24px);
+        margin-bottom: 10px;
+    }
+}

@@ -1,0 +1,43 @@
+.select {
+    position: relative;
+    outline: none;
+
+    &__options {
+        position: absolute;
+        background-color: #f6f6f6;
+        border-radius: 12px;
+        margin-top: 8px;
+        z-index: 2;
+        max-height: 160px;
+        overflow-y: auto;
+        color: $gray-150;
+        padding: 8px 0;
+        @include regular-14;
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        width: 120px;
+        padding: 4px 12px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #ebebeb;
+        }
+    }
+
+    &__color {
+        width: 12px;
+        height: 12px;
+        border-radius: 6px;
+        margin-right: 8px;
+    }
+}
+
+@media screen and (max-width: 719px) {
+    .select__options {
+        bottom: 0;
+        margin-bottom: 44px;
+    }
+}

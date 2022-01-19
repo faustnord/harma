@@ -1,0 +1,38 @@
+.search {
+    position: relative;
+    width: 100%;
+
+    &__input {
+        background-color: $gray-20;
+        border-radius: 12px;
+        padding-left: 40px;
+        height: 36px;
+        width: 100%;
+        @include regular-14;
+        border: 0;
+
+        &::placeholder {
+            color: $gray-70;
+        }
+
+        &:focus-visible {
+            outline: none;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        left: 12px;
+        top: 8px;
+    }
+}
+
+@media screen and (max-width: 719px) {
+    .search__input {
+        @include regular-16;
+    }
+}
