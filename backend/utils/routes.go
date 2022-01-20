@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"galagram/api"
+	"harma/api"
 
 	"github.com/labstack/echo"
 )

@@ -42,16 +42,18 @@ export const TaggedNotes = ({ title }: { title: string }) => {
             </div>
 
             <Masonry className="notes" style={toggleModal ? { overflow: 'hidden' } : {}} options={{ transitionDuration: 200 }}>
-                {notes?.map(note => (
-                    <Card
-                        key={note.ID}
-                        note={note}
-                        onClick={() => {
-                            setToggleModal(true)
-                            setCurrentId(note.ID)
-                        }}
-                    />
-                ))}
+                {notes
+                    ?.filter(note => !note.Archived)
+                    .map(note => (
+                        <Card
+                            key={note.ID}
+                            note={note}
+                            onClick={() => {
+                                setToggleModal(true)
+                                setCurrentId(note.ID)
+                            }}
+                        />
+                    ))}
             </Masonry>
             {toggleModal && <Modal id={currentId} onUpdate={GetAllNotes} onClose={() => setToggleModal(false)} />}
         </>

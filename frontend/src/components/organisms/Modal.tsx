@@ -11,8 +11,10 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     const [text, setText] = useState<string>('')
     const [note, setNote] = useState<Note>()
     const [isEdited, setIsEdited] = useState<boolean>(false)
-    const [tags, setTags] = useState<{ label: string; value: number; color: string }[]>()
+    const [tags, setTags] = useState<{ label: string; value: number }[]>()
     const [colors, setColors] = useState<{ label: string; value: number; color: string }[]>()
+
+    console.log('note', note)
 
     // EFFECTS
     useEffect(() => {
@@ -159,6 +161,11 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                     })
                 }
             })
+        } else {
+            setNote(state => {
+                let col = colors?.find(c => c.value === colorId)
+                return { ...state, ColorID: colorId, Color: { ID: colorId, Color: col?.color } }
+            })
         }
     }
 
@@ -182,6 +189,11 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                     })
                 }
             })
+        } else {
+            setNote(state => {
+                let tag = tags?.find(t => t.value === tagId)
+                return { ...state, Tags: state?.Tags ? [...state?.Tags, { ID: tagId, Name: tag?.label }] : [{ ID: tagId, Name: tag?.label }] }
+            })
         }
     }
 
@@ -199,7 +211,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                             color={note?.Color?.Color || '#f3f3f3'}
                             onChange={colorId => onColorSelect(colorId)}
                         />
-                        <Select icon="tag" options={tags as { label: string; value: number; color: string }[]} onChange={tagId => onTagSelect(tagId)} />
+                        <Select icon="tag" options={tags as { label: string; value: number }[]} onChange={tagId => onTagSelect(tagId)} />
                         {id && <Button icon="archive" onClick={onArchiveClick} />}
                         {id && <Button icon="trash" onClick={onDeleteClick} />}
                     </div>

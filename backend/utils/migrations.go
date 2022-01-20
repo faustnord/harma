@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"galagram/api"
+	"harma/api"
 
 	"gorm.io/gorm"
 )

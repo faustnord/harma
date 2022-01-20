@@ -16,7 +16,6 @@ export const ColorSelect = ({
     color?: string
 }) => {
     const [open, setOpen] = useState<boolean>(false)
-
     const [mouseOver, setMouseOver] = useState<boolean>(false)
 
     return (

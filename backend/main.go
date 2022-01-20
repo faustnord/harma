@@ -1,8 +1,8 @@
 package main
 
 import (
-	"galagram/api"
-	"galagram/utils"
+	"harma/api"
+	"harma/utils"
 
 	"github.com/labstack/echo"
 )
@@ -37,6 +37,9 @@ func main() {
 
 	// Api
 	api.Db(db)
+
+	// Serving static files
+	e.Static("/", "public")
 
 	// Start server
 	e.Logger.Fatal(e.Start(c.Port))
