@@ -21,11 +21,34 @@
         width: 28px;
         height: 28px;
         border-radius: 14px;
-        margin: 0 4px;
         cursor: pointer;
 
         &:hover {
             border: 2px solid $gray-70;
+        }
+    }
+
+    &__color-box {
+        position: relative;
+        margin: 0 4px;
+
+        & svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 28px;
+            height: 28px;
+            padding: 4px;
+        }
+    }
+
+    & .button {
+        &:hover {
+            filter: contrast(0.95);
+        }
+
+        &:active {
+            filter: contrast(0.9);
         }
     }
 }

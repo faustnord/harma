@@ -19,6 +19,7 @@ export interface Tag {
 
 export interface Note {
     Archived?:  boolean;
+    CheckList?: boolean;
     Color?:     Color;
     ColorID?:   number;
     CreatedAt?: Date;

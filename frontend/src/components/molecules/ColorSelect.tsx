@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button } from '../atoms/Button'
-import { IconName } from '../atoms/Icon'
+import { Icon, IconName } from '../atoms/Icon'
 
 export const ColorSelect = ({
     icon,
@@ -30,7 +30,10 @@ export const ColorSelect = ({
             {open && (
                 <div className="color-select__options">
                     {options?.map(o => (
-                        <div key={o.value} className="color-select__color" style={{ backgroundColor: o.color }} onClick={() => onChange(o.value)} />
+                        <div className="color-select__color-box">
+                            <div key={o.value} className="color-select__color" style={{ backgroundColor: o.color }} onClick={() => onChange(o.value)} />
+                            {o.value === value && <Icon name="check" />}
+                        </div>
                     ))}
                 </div>
             )}

@@ -18,6 +18,7 @@ type Note struct {
 	UserID    uint
 	Pinned    bool
 	Archived  bool
+	CheckList bool
 	NoteItems *[]NoteItem `json:",omitempty" descriptor:"note_items"`
 	Tags      *[]Tag      `gorm:"many2many:note_tags;" json:",omitempty" descriptor:"tags"`
 }

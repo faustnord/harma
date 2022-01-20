@@ -99,6 +99,9 @@
                 "Archived": {
                     "type": "boolean"
                 },
+                "CheckList": {
+                    "type": "boolean"
+                },
                 "NoteItems": {
                     "items": {
                         "$schema": "http://json-schema.org/draft-04/schema#",

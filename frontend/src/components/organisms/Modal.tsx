@@ -14,8 +14,6 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     const [tags, setTags] = useState<{ label: string; value: number }[]>()
     const [colors, setColors] = useState<{ label: string; value: number; color: string }[]>()
 
-    console.log('note', note)
-
     // EFFECTS
     useEffect(() => {
         if (id) {
@@ -199,97 +197,101 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
     // TEMPLATE
     return (
-        <div className="modal">
-            <div className="modal__background"></div>
-            <div className="modal__window">
-                <div className="modal__header">
-                    <div className="modal__button-group" id="desktop">
-                        <ColorSelect
-                            icon="palette"
-                            options={colors as { label: string; value: number; color: string }[]}
-                            value={note?.ColorID || 9}
-                            color={note?.Color?.Color || '#f3f3f3'}
-                            onChange={colorId => onColorSelect(colorId)}
-                        />
-                        <Select icon="tag" options={tags as { label: string; value: number }[]} onChange={tagId => onTagSelect(tagId)} />
-                        {id && <Button icon="archive" onClick={onArchiveClick} />}
-                        {id && <Button icon="trash" onClick={onDeleteClick} />}
-                    </div>
-
-                    <div className="modal__button-group" id="desktop">
-                        <Button icon={note?.Pinned ? 'pin-solid' : 'pin'} onClick={onPinClick} />
-                        <Button icon={isEdited ? 'check' : 'close'} onClick={isEdited ? (id ? onSaveClick : onCreateClick) : onClose} />
-                    </div>
-
-                    <div id="mobile">
-                        <Button icon={note?.Pinned ? 'pin-solid' : 'pin'} onClick={onPinClick} />
-                    </div>
-
-                    <div id="mobile">
-                        <Button icon={isEdited ? 'check' : 'close'} onClick={isEdited ? (id ? onSaveClick : onCreateClick) : onClose} />
-                    </div>
-                </div>
-
-                <div className="modal__body">
-                    <div className="editor">
-                        <div className="editor__header">
-                            <div
-                                className="editor__header-edit"
-                                contentEditable
-                                onInput={e => onHeaderInput(e.currentTarget.innerText)}
-                                onBlur={() => setNote(state => ({ ...state, Header: header }))}
-                                suppressContentEditableWarning
-                                spellCheck
-                                aria-label="Введите заголовок"
-                            >
-                                {note?.Header}
+        <>
+            {(id ? note : true) && (
+                <div className="modal">
+                    <div className="modal__background"></div>
+                    <div className="modal__window">
+                        <div className="modal__header">
+                            <div className="modal__button-group" id="desktop">
+                                <ColorSelect
+                                    icon="palette"
+                                    options={colors as { label: string; value: number; color: string }[]}
+                                    value={note?.ColorID || 9}
+                                    color={note?.Color?.Color || '#f3f3f3'}
+                                    onChange={colorId => onColorSelect(colorId)}
+                                />
+                                <Select icon="tag" options={tags as { label: string; value: number }[]} onChange={tagId => onTagSelect(tagId)} />
+                                {id && <Button icon="archive" onClick={onArchiveClick} />}
+                                {id && <Button icon="trash" onClick={onDeleteClick} />}
                             </div>
-                            {!header?.trim() && <div className="editor__placeholder">Введите заголовок</div>}
+
+                            <div className="modal__button-group" id="desktop">
+                                <Button icon={note?.Pinned ? 'pin-solid' : 'pin'} onClick={onPinClick} />
+                                <Button icon={isEdited ? 'check' : 'close'} onClick={isEdited ? (id ? onSaveClick : onCreateClick) : onClose} />
+                            </div>
+
+                            <div id="mobile">
+                                <Button icon={note?.Pinned ? 'pin-solid' : 'pin'} onClick={onPinClick} />
+                            </div>
+
+                            <div id="mobile">
+                                <Button icon={isEdited ? 'check' : 'close'} onClick={isEdited ? (id ? onSaveClick : onCreateClick) : onClose} />
+                            </div>
                         </div>
 
-                        <div className="editor__text">
-                            <div
-                                className="editor__text-edit"
-                                contentEditable
-                                onInput={e => onTextInput(e.currentTarget.innerText)}
-                                onBlur={() => setNote(state => ({ ...state, Text: text }))}
-                                suppressContentEditableWarning
-                                spellCheck
-                                aria-label="Текст заметки..."
-                            >
-                                {note?.Text}
+                        <div className="modal__body">
+                            <div className="editor">
+                                <div className="editor__header">
+                                    <div
+                                        className="editor__header-edit"
+                                        contentEditable
+                                        onInput={e => onHeaderInput(e.currentTarget.innerText)}
+                                        onBlur={() => setNote(state => ({ ...state, Header: header }))}
+                                        suppressContentEditableWarning
+                                        spellCheck
+                                        aria-label="Введите заголовок"
+                                    >
+                                        {note?.Header}
+                                    </div>
+                                    {!header?.trim() && <div className="editor__placeholder">Введите заголовок</div>}
+                                </div>
+
+                                <div className="editor__text">
+                                    <div
+                                        className="editor__text-edit"
+                                        contentEditable
+                                        onInput={e => onTextInput(e.currentTarget.innerText)}
+                                        onBlur={() => setNote(state => ({ ...state, Text: text }))}
+                                        suppressContentEditableWarning
+                                        spellCheck
+                                        aria-label="Текст заметки..."
+                                    >
+                                        {note?.Text}
+                                    </div>
+                                    {!text?.trim() && <div className="editor__placeholder">Текст заметки...</div>}
+                                </div>
                             </div>
-                            {!text?.trim() && <div className="editor__placeholder">Текст заметки...</div>}
+
+                            <div className="modal__tags">
+                                {note?.Tags?.map(t => (
+                                    <div key={t.ID} className="modal__tag">
+                                        {t.Name}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="modal__footer">
+                            <div className="modal__button-group" id="mobile">
+                                <ColorSelect
+                                    icon="palette"
+                                    options={colors as { label: string; value: number; color: string }[]}
+                                    value={note?.ColorID || 9}
+                                    color={note?.Color?.Color || '#f3f3f3'}
+                                    onChange={colorId => onColorSelect(colorId)}
+                                />
+                                <Select icon="tag" options={tags as { label: string; value: number; color: string }[]} onChange={tagId => onTagSelect(tagId)} />
+                            </div>
+
+                            <div className="modal__button-group" id="mobile">
+                                {id && <Button icon="archive" onClick={onArchiveClick} />}
+                                {id && <Button icon="trash" onClick={onDeleteClick} />}
+                            </div>
                         </div>
                     </div>
-
-                    <div className="modal__tags">
-                        {note?.Tags?.map(t => (
-                            <div key={t.ID} className="modal__tag">
-                                {t.Name}
-                            </div>
-                        ))}
-                    </div>
                 </div>
-
-                <div className="modal__footer">
-                    <div className="modal__button-group" id="mobile">
-                        <ColorSelect
-                            icon="palette"
-                            options={colors as { label: string; value: number; color: string }[]}
-                            value={note?.ColorID || 9}
-                            color={note?.Color?.Color || '#f3f3f3'}
-                            onChange={colorId => onColorSelect(colorId)}
-                        />
-                        <Select icon="tag" options={tags as { label: string; value: number; color: string }[]} onChange={tagId => onTagSelect(tagId)} />
-                    </div>
-
-                    <div className="modal__button-group" id="mobile">
-                        {id && <Button icon="archive" onClick={onArchiveClick} />}
-                        {id && <Button icon="trash" onClick={onDeleteClick} />}
-                    </div>
-                </div>
-            </div>
-        </div>
+            )}
+        </>
     )
 }
