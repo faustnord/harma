@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { CreateApi, DeleteApi, GetAllApi, GetApi, UpdateApi } from '../../api/api'
 import { Color, Note, Tag } from '../../api/models'
 import { Button } from '../atoms/Button'
-import { ColorSelect } from '../molecules/ColorSelect'
-import { Select } from '../molecules/Select'
+import { ColorSelect, ColorSelectOption } from '../molecules/ColorSelect'
+import { Select, SelectOption } from '../molecules/Select'
 
 export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => void; onUpdate: () => void }) => {
     // STATES
@@ -11,8 +11,8 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     const [text, setText] = useState<string>('')
     const [note, setNote] = useState<Note>()
     const [isEdited, setIsEdited] = useState<boolean>(false)
-    const [tags, setTags] = useState<{ label: string; value: number }[]>()
-    const [colors, setColors] = useState<{ label: string; value: number; color: string }[]>()
+    const [tags, setTags] = useState<SelectOption[]>()
+    const [colors, setColors] = useState<ColorSelectOption[]>()
 
     // EFFECTS
     useEffect(() => {
@@ -33,11 +33,12 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
             model: 'Tag',
             onSuccess: res =>
                 setTags(
-                    (res as Tag[]).map(t => ({ label: t.Name, value: t.ID })) as {
-                        label: string
-                        value: number
-                        color: string
-                    }[]
+                    (res as Tag[]).map(
+                        (t): SelectOption => ({
+                            label: t.Name,
+                            value: t.ID
+                        })
+                    )
                 )
         })
 
@@ -45,11 +46,13 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
             model: 'Color',
             onSuccess: res =>
                 setColors(
-                    (res as Color[]).map(c => ({
-                        label: c.Name,
-                        value: c.ID,
-                        color: c.Color
-                    })) as { label: string; value: number; color: string }[]
+                    (res as Color[]).map(
+                        (c): ColorSelectOption => ({
+                            label: c.Name,
+                            value: c.ID,
+                            color: c.Color
+                        })
+                    )
                 )
         })
     }, [id])
@@ -79,7 +82,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
             UpdateApi({
                 model: 'Note',
                 id: id,
-                data: { ...note, Pinned: !note?.Pinned } as Note,
+                data: { ...note, Pinned: !note?.Pinned },
                 onSuccess: () => {
                     onUpdate()
                 }
@@ -90,7 +93,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     const onCreateClick = () => {
         CreateApi({
             model: 'Note',
-            data: { ...note, UserID: 1, ColorID: 1 } as Note,
+            data: { ...note, UserID: 1, ColorID: 1 },
             onSuccess: () => {
                 onUpdate()
                 onClose()
@@ -117,7 +120,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
             UpdateApi({
                 model: 'Note',
                 id: id,
-                data: { ...note, Archived: true } as Note,
+                data: { ...note, Archived: true },
                 onSuccess: () => {
                     onUpdate()
                     onClose()
@@ -144,7 +147,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
             UpdateApi({
                 model: 'Note',
                 id: id,
-                data: { ...note, ColorID: colorId, Color: { ID: colorId } } as Note,
+                data: { ...note, ColorID: colorId, Color: { ID: colorId } },
                 onSuccess: () => {
                     onUpdate()
                     GetApi({
@@ -172,7 +175,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
             UpdateApi({
                 model: 'Note',
                 id: id,
-                data: { ...note, Tags: note?.Tags ? [...note?.Tags, { ID: tagId }] : [{ ID: tagId }] } as Note,
+                data: { ...note, Tags: note?.Tags ? [...note?.Tags, { ID: tagId }] : [{ ID: tagId }] },
                 onSuccess: () => {
                     onUpdate()
                     GetApi({
@@ -206,12 +209,12 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                             <div className="modal__button-group" id="desktop">
                                 <ColorSelect
                                     icon="palette"
-                                    options={colors as { label: string; value: number; color: string }[]}
-                                    value={note?.ColorID || 9}
+                                    options={colors}
+                                    value={note?.ColorID}
                                     color={note?.Color?.Color || '#f3f3f3'}
                                     onChange={colorId => onColorSelect(colorId)}
                                 />
-                                <Select icon="tag" options={tags as { label: string; value: number }[]} onChange={tagId => onTagSelect(tagId)} />
+                                <Select icon="tag" options={tags} onChange={tagId => onTagSelect(tagId)} />
                                 {id && <Button icon="archive" onClick={onArchiveClick} />}
                                 {id && <Button icon="trash" onClick={onDeleteClick} />}
                             </div>
@@ -276,12 +279,12 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                             <div className="modal__button-group" id="mobile">
                                 <ColorSelect
                                     icon="palette"
-                                    options={colors as { label: string; value: number; color: string }[]}
-                                    value={note?.ColorID || 9}
+                                    options={colors}
+                                    value={note?.ColorID}
                                     color={note?.Color?.Color || '#f3f3f3'}
                                     onChange={colorId => onColorSelect(colorId)}
                                 />
-                                <Select icon="tag" options={tags as { label: string; value: number; color: string }[]} onChange={tagId => onTagSelect(tagId)} />
+                                <Select icon="tag" options={tags} onChange={tagId => onTagSelect(tagId)} />
                             </div>
 
                             <div className="modal__button-group" id="mobile">

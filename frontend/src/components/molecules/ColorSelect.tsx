@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Button } from '../atoms/Button'
 import { Icon, IconName } from '../atoms/Icon'
 
+export type ColorSelectOption = { label?: string; value?: number; color?: string }
+
 export const ColorSelect = ({
     icon,
     value,
@@ -11,7 +13,7 @@ export const ColorSelect = ({
 }: {
     icon: IconName
     value?: number
-    options: { label: string; value: number; color?: string }[]
+    options?: ColorSelectOption[]
     onChange: (value: number) => void
     color?: string
 }) => {
@@ -31,7 +33,12 @@ export const ColorSelect = ({
                 <div className="color-select__options">
                     {options?.map(o => (
                         <div className="color-select__color-box">
-                            <div key={o.value} className="color-select__color" style={{ backgroundColor: o.color }} onClick={() => onChange(o.value)} />
+                            <div
+                                key={o.value}
+                                className="color-select__color"
+                                style={{ backgroundColor: o.color }}
+                                onClick={() => o.value && onChange(o.value)}
+                            />
                             {o.value === value && <Icon name="check" />}
                         </div>
                     ))}

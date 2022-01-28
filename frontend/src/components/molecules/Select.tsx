@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Button } from '../atoms/Button'
 import { IconName } from '../atoms/Icon'
 
+export type SelectOption = { label?: string; value?: number }
+
 export const Select = ({
     icon,
     value,
@@ -11,7 +13,7 @@ export const Select = ({
 }: {
     icon: IconName
     value?: number
-    options: { label: string; value: number; color?: string }[]
+    options?: SelectOption[]
     onChange: (value: number) => void
     color?: string
 }) => {
@@ -30,8 +32,7 @@ export const Select = ({
             {open && (
                 <div className="select__options">
                     {options?.map(o => (
-                        <div key={o.value} className="select__option" onClick={() => onChange(o.value)}>
-                            {o.color && <div className="select__color" style={{ backgroundColor: o.color }} />}
+                        <div key={o.value} className="select__option" onClick={() => o.value && onChange(o.value)}>
                             {o.label}
                         </div>
                     ))}
