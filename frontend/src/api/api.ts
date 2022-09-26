@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { Models } from './models'
+import { validateModel, validateString } from './validator'
 
 // Создание инcтанса Axios
 const api = axios.create({
@@ -70,8 +71,8 @@ export const GetApi = <Model>({
     expand?: (keyof Model)[] | keyof Model | string | string[]
 }) => {
     api.get(`get/${toURL(model)}/${id}${toOptions<Model>({ expand })}`)
-        .then((res: AxiosResponse<Model>) => onSuccess && onSuccess(res.data))
-        .catch((err: AxiosError<ErrorData>) => onError && onError(err.response))
+        .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateModel<Model>({ name: model, data: res.data })))
+        .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
 
 /** Получение множества записей */
@@ -91,8 +92,8 @@ export const GetAllApi = <Model>({
     sort?: (keyof Model)[] | keyof Model | string | string[]
 }) => {
     api.get(`get_all/${toURL(model)}${toOptions<Model>({ expand, filter, sort })}`)
-        .then((res: AxiosResponse<Model[]>) => onSuccess && onSuccess(res.data))
-        .catch((err: AxiosError<ErrorData>) => onError && onError(err.response))
+        .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateModel<Model[]>({ name: model, data: res.data })))
+        .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
 
 /** Создание записи */
@@ -108,8 +109,8 @@ export const CreateApi = <Model>({
     onError?: (err: AxiosResponse<ErrorData> | undefined) => void
 }) => {
     api.post(`create/${toURL(model)}`, data)
-        .then((res: AxiosResponse<Model>) => onSuccess && onSuccess(res.data))
-        .catch((err: AxiosError<ErrorData>) => onError && onError(err.response))
+        .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateModel<Model>({ name: model, data: res.data })))
+        .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
 
 /** Обновление записи */
@@ -127,12 +128,12 @@ export const UpdateApi = <Model>({
     onError?: (err: AxiosResponse<ErrorData> | undefined) => void
 }) => {
     api.put(`update/${toURL(model)}/${id}`, data)
-        .then((res: AxiosResponse<Model>) => onSuccess && onSuccess(res.data))
-        .catch((err: AxiosError<ErrorData>) => onError && onError(err.response))
+        .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateModel<Model>({ name: model, data: res.data })))
+        .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
 
 /** Удаление записи */
-export const DeleteApi = <Model>({
+export const DeleteApi = ({
     model,
     id,
     onSuccess,
@@ -140,10 +141,10 @@ export const DeleteApi = <Model>({
 }: {
     model: keyof Models
     id: number
-    onSuccess?: (res: Model) => void
+    onSuccess?: (res: string) => void
     onError?: (err: AxiosResponse<ErrorData> | undefined) => void
 }) => {
     api.delete(`delete/${toURL(model)}/${id}`)
-        .then((res: AxiosResponse<Model>) => onSuccess && onSuccess(res.data))
-        .catch((err: AxiosError<ErrorData>) => onError && onError(err.response))
+        .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateString(res.data)))
+        .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
