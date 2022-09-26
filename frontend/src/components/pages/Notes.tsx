@@ -16,12 +16,12 @@ export const Notes = ({ title }: { title: string }) => {
 
     // CALLBACKS
     const GetAllNotes = useCallback(() => {
-        GetAllApi({
+        GetAllApi<Note>({
             model: 'Note',
-            onSuccess: res => setNotes(res as Note[]),
+            onSuccess: res => setNotes(res),
             expand: ['Tags', 'NoteItems', 'Color'],
             sort: ['Pinned@desc', 'ID@desc'],
-            filter: ['Archived:ne:true', `Text:like:${search?.toLowerCase() || ''}`]
+            filter: ['Archived:ne:true', search ? `Text:like:${search?.toLowerCase()}` : '']
         })
     }, [search])
 

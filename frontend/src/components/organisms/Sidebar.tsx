@@ -10,9 +10,9 @@ export const Sidebar = () => {
 
     // EFFECTS
     useEffect(() => {
-        GetAllApi({
+        GetAllApi<Tag>({
             model: 'Tag',
-            onSuccess: res => setTags(res as Tag[])
+            onSuccess: res => setTags(res)
         })
     }, [])
 

@@ -17,10 +17,10 @@ export const TaggedNotes = ({ title }: { title: string }) => {
 
     // CALLBACKS
     const GetAllNotes = useCallback(() => {
-        GetApi({
+        GetApi<Tag>({
             model: 'Tag',
             id: Number(params.id),
-            onSuccess: res => setNotes((res as Tag).Notes),
+            onSuccess: res => setNotes(res.Notes),
             expand: ['Notes/Tags', 'Notes/NoteItems', 'Notes/Color']
         })
     }, [params.id])

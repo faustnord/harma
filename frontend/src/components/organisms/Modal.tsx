@@ -17,23 +17,23 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     // EFFECTS
     useEffect(() => {
         if (id) {
-            GetApi({
+            GetApi<Note>({
                 model: 'Note',
                 id: id,
                 expand: ['Tags', 'NoteItems', 'Color'],
                 onSuccess: res => {
-                    setNote(res as Note)
-                    setHeader((res as Note).Header || '')
-                    setText((res as Note).Text || '')
+                    setNote(res)
+                    setHeader(res.Header || '')
+                    setText(res.Text || '')
                 }
             })
         }
 
-        GetAllApi({
+        GetAllApi<Tag>({
             model: 'Tag',
             onSuccess: res =>
                 setTags(
-                    (res as Tag[]).map(
+                    res.map(
                         (t): SelectOption => ({
                             label: t.Name,
                             value: t.ID
@@ -42,11 +42,11 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                 )
         })
 
-        GetAllApi({
+        GetAllApi<Color>({
             model: 'Color',
             onSuccess: res =>
                 setColors(
-                    (res as Color[]).map(
+                    res.map(
                         (c): ColorSelectOption => ({
                             label: c.Name,
                             value: c.ID,
@@ -79,7 +79,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     const onPinClick = () => {
         setNote(state => ({ ...state, Pinned: !state?.Pinned }))
         if (id) {
-            UpdateApi({
+            UpdateApi<Note>({
                 model: 'Note',
                 id: id,
                 data: { ...note, Pinned: !note?.Pinned },
@@ -91,7 +91,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     }
 
     const onCreateClick = () => {
-        CreateApi({
+        CreateApi<Note>({
             model: 'Note',
             data: { ...note, UserID: 1, ColorID: 1 },
             onSuccess: () => {
@@ -103,10 +103,10 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
     const onSaveClick = () => {
         if (id) {
-            UpdateApi({
+            UpdateApi<Note>({
                 model: 'Note',
                 id: id,
-                data: note,
+                data: { ...note },
                 onSuccess: () => {
                     onUpdate()
                     onClose()
@@ -117,7 +117,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
     const onArchiveClick = () => {
         if (id) {
-            UpdateApi({
+            UpdateApi<Note>({
                 model: 'Note',
                 id: id,
                 data: { ...note, Archived: true },
@@ -144,20 +144,20 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
     const onColorSelect = (colorId: number) => {
         if (id) {
-            UpdateApi({
+            UpdateApi<Note>({
                 model: 'Note',
                 id: id,
                 data: { ...note, ColorID: colorId, Color: { ID: colorId } },
                 onSuccess: () => {
                     onUpdate()
-                    GetApi({
+                    GetApi<Note>({
                         model: 'Note',
                         id: id,
                         expand: ['Tags', 'NoteItems', 'Color'],
                         onSuccess: res => {
-                            setNote(res as Note)
-                            setHeader((res as Note).Header || '')
-                            setText((res as Note).Text || '')
+                            setNote(res)
+                            setHeader(res.Header || '')
+                            setText(res.Text || '')
                         }
                     })
                 }
@@ -172,20 +172,20 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
     const onTagSelect = (tagId: number) => {
         if (id) {
-            UpdateApi({
+            UpdateApi<Note>({
                 model: 'Note',
                 id: id,
                 data: { ...note, Tags: note?.Tags ? [...note?.Tags, { ID: tagId }] : [{ ID: tagId }] },
                 onSuccess: () => {
                     onUpdate()
-                    GetApi({
+                    GetApi<Note>({
                         model: 'Note',
                         id: id,
                         expand: ['Tags', 'NoteItems', 'Color'],
                         onSuccess: res => {
-                            setNote(res as Note)
-                            setHeader((res as Note).Header || '')
-                            setText((res as Note).Text || '')
+                            setNote(res)
+                            setHeader(res.Header || '')
+                            setText(res.Text || '')
                         }
                     })
                 }

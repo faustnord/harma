@@ -15,9 +15,9 @@ export const Archive = ({ title }: { title: string }) => {
 
     // CALLBACKS
     const GetAllNotes = useCallback(() => {
-        GetAllApi({
+        GetAllApi<Note>({
             model: 'Note',
-            onSuccess: res => setNotes(res as Note[]),
+            onSuccess: res => setNotes(res),
             expand: ['Tags', 'NoteItems', 'Color'],
             sort: ['Pinned@desc', 'ID@desc'],
             filter: ['Archived:eq:true', search ? `Text:like:${search?.toLowerCase()}` : '']
