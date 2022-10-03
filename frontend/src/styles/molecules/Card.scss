@@ -40,6 +40,17 @@
             margin-right: 0px;
         }
     }
+
+    &__pin {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        float: right;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 8px;
+    }
 }
 
 @media screen and (max-width: 1199px) {
