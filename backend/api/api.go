@@ -128,7 +128,10 @@ func Get(c echo.Context) error {
 				}
 			}
 			e = strings.Join(sliceExpand, ".")
-			chain = chain.Preload(e)
+			chain = chain.Preload(e, func(db *gorm.DB) *gorm.DB {
+				db = db.Order("ID")
+				return db
+			})
 		}
 	}
 	if result := chain.First(model, c.Param("id")); result.Error != nil {
@@ -163,7 +166,10 @@ func GetAll(c echo.Context) error {
 				}
 			}
 			e = strings.Join(sliceExpand, ".")
-			chain = chain.Preload(e)
+			chain = chain.Preload(e, func(db *gorm.DB) *gorm.DB {
+				db = db.Order("ID")
+				return db
+			})
 		}
 	}
 	if filter := c.QueryParam("filter"); filter != "" {
