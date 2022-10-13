@@ -4,8 +4,8 @@ import { validateModel, validateString } from './validator'
 
 // Создание инcтанса Axios
 const api = axios.create({
-    baseURL: 'http://localhost:4444/',
-    timeout: 1000
+    baseURL: process.env.REACT_APP_BACKEND_URL,
+    timeout: Number(process.env.REACT_APP_REQUEST_TIMEOUT)
 })
 
 // Тип тела ошибки запроса
