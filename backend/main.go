@@ -3,6 +3,7 @@ package main
 import (
 	"harma/api"
 	"harma/utils"
+	"os"
 
 	"github.com/labstack/echo"
 )
@@ -12,7 +13,7 @@ func main() {
 	e := echo.New()
 
 	// Config
-	c := utils.Config()
+	utils.Config()
 
 	// Database
 	db := utils.Database()
@@ -42,5 +43,5 @@ func main() {
 	e.Static("/", "public")
 
 	// Start server
-	e.Logger.Fatal(e.Start(c.Port))
+	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 }

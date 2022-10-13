@@ -1,12 +1,15 @@
 package utils
 
-type Configuration struct {
-	Port string
-}
+import (
+	"log"
+
+	"github.com/joho/godotenv"
+)
 
 // Config of project
-func Config() *Configuration {
-	c := new(Configuration)
-	c.Port = ":4444"
-	return c
+func Config() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 }
