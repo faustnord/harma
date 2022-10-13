@@ -10,11 +10,20 @@ export const Card = ({ note, onClick }: { note: Note; onClick: React.MouseEventH
                 </div>
             )}
             {note.Header && (
-                <div className="card__header" style={!note.Text ? { marginBottom: 0 } : {}}>
+                <div className="card__header" style={!note.Text && !note.NoteItems?.length ? { marginBottom: 0 } : {}}>
                     {note.Header}
                 </div>
             )}
-            {note.Text && <div className="card__body">{note.Text}</div>}
+            {note?.CheckList
+                ? note.NoteItems?.map((noteItem, i) => (
+                      <div className="card__item" key={i}>
+                          <div className="card__checkbox">
+                              <Icon name={noteItem.Done ? 'checkbox' : 'square'} size="16px" color={note.Color?.TextColor} />
+                          </div>
+                          <div style={noteItem.Done ? { color: `${note.Color?.TextColor}90`, textDecoration: 'line-through' } : {}}>{noteItem.Text}</div>
+                      </div>
+                  ))
+                : note.Text && <div className="card__body">{note.Text}</div>}
             {note.Tags && note.Tags?.length > 0 && (
                 <div className="card__tags">
                     {note.Tags?.map(t => (
