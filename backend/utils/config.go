@@ -8,8 +8,10 @@ import (
 
 // Config of project
 func Config() {
-	err := godotenv.Load()
+	err := godotenv.Load(".env.local")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading '.env.local' file")
+		godotenv.Load()
 	}
+
 }

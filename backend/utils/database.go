@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"log"
 	"os"
 
 	"gorm.io/driver/postgres"
@@ -12,10 +13,8 @@ import (
 func Database() *gorm.DB {
 	dsn := "host=" + os.Getenv("DB_HOST") + " user=" + os.Getenv("DB_USER") + " password=" + os.Getenv("DB_PASSWORD") + " dbname=" + os.Getenv("DB_NAME") + " port=" + os.Getenv("DB_PORT") + " sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logger.Info)})
-	if err != nil {
-		println("Database Connection Error")
-	} else {
-		println("Database Connection Ok")
+	if err == nil {
+		log.Println("Database Connection Ok")
 		return db
 	}
 	return db
