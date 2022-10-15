@@ -17,6 +17,7 @@ export type IconName =
     | 'pin-solid'
     | 'checkbox'
     | 'square'
+    | 'unarchive'
 
 export const Icon = ({
     name,
@@ -45,6 +46,29 @@ export const Icon = ({
                     <path d="M7.3515 11.7266L9.99994 14.375L12.6484 11.7266" stroke={color} strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M10 8.125V14.375" stroke={color} strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M3.125 5.625H16.875" stroke={color} strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            )
+
+        case 'unarchive':
+            return (
+                <svg style={style} className={className} width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_603_632)">
+                        <path
+                            d="M16.25 16.875H3.75C3.58424 16.875 3.42527 16.8092 3.30806 16.6919C3.19085 16.5747 3.125 16.4158 3.125 16.25V5.625L4.375 3.125H15.625L16.875 5.625V16.25C16.875 16.4158 16.8092 16.5747 16.6919 16.6919C16.5747 16.8092 16.4158 16.875 16.25 16.875Z"
+                            stroke={color}
+                            stroke-width="1.25"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path d="M12.6484 10.7734L10 8.125L7.35156 10.7734" stroke={color} stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 14.375V8.125" stroke={color} stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M3.125 5.625H16.875" stroke={color} stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_603_632">
+                            <rect width="20" height="20" fill="white" />
+                        </clipPath>
+                    </defs>
                 </svg>
             )
 

@@ -68,18 +68,14 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     // HANDLERS
     const onHeaderInput = (header: string) => {
         setHeader(header)
-        if (id) {
-            setIsEdited(true)
-        } else {
+        if (!id) {
             setIsEdited(Boolean(header || text))
         }
     }
 
     const onTextInput = (text: string) => {
         setText(text)
-        if (id) {
-            setIsEdited(true)
-        } else {
+        if (!id) {
             setIsEdited(Boolean(text || header))
         }
     }
@@ -123,12 +119,50 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
         }
     }
 
+    const onHeaderSave = (header: string) => {
+        if (id) {
+            UpdateApi<Note>({
+                model: 'Note',
+                id: id,
+                data: { ...note, Header: header },
+                onSuccess: () => {
+                    onUpdate()
+                    GetApi<Note>({
+                        model: 'Note',
+                        id: id,
+                        expand: ['Tags', 'NoteItems', 'Color'],
+                        onSuccess: res => setNote(res)
+                    })
+                }
+            })
+        }
+    }
+
+    const onTextSave = (text: string) => {
+        if (id) {
+            UpdateApi<Note>({
+                model: 'Note',
+                id: id,
+                data: { ...note, Text: text },
+                onSuccess: () => {
+                    onUpdate()
+                    GetApi<Note>({
+                        model: 'Note',
+                        id: id,
+                        expand: ['Tags', 'NoteItems', 'Color'],
+                        onSuccess: res => setNote(res)
+                    })
+                }
+            })
+        }
+    }
+
     const onArchiveClick = () => {
         if (id) {
             UpdateApi<Note>({
                 model: 'Note',
                 id: id,
-                data: { ...note, Archived: true },
+                data: { ...note, Archived: !note?.Archived },
                 onSuccess: () => {
                     onUpdate()
                     onClose()
@@ -242,9 +276,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
     const onCheckListItemInput = (noteItemId: number, text: string) => {
         setItemsText(state => ({ ...state, [noteItemId]: text }))
-        if (id) {
-            setIsEdited(true)
-        } else {
+        if (!id) {
             setIsEdited(Boolean(text || header))
         }
     }
@@ -312,9 +344,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
     const onNewItemTextInput = (text: string) => {
         setNewItemText(text)
-        if (id) {
-            setIsEdited(true)
-        } else {
+        if (!id) {
             setIsEdited(Boolean(text || header))
         }
     }
@@ -343,7 +373,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                                     onChange={colorId => onColorSelect(colorId)}
                                 />
                                 <Select icon="tag" options={tags} onChange={tagId => onTagSelect(tagId)} />
-                                {id && <Button icon="archive" onClick={onArchiveClick} />}
+                                {id && <Button icon={note?.Archived ? 'unarchive' : 'archive'} onClick={onArchiveClick} />}
                                 {id && <Button icon="trash" onClick={onDeleteClick} />}
                             </div>
 
@@ -375,7 +405,15 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                                         className="editor__header-edit"
                                         contentEditable
                                         onInput={e => onHeaderInput(e.currentTarget.innerText)}
-                                        onBlur={() => setNote(state => ({ ...state, Header: header }))}
+                                        onBlur={() => {
+                                            setNote(state => ({ ...state, Header: header }))
+                                            onHeaderSave(header)
+                                        }}
+                                        onKeyDown={e => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault()
+                                            }
+                                        }}
                                         suppressContentEditableWarning
                                         spellCheck
                                         aria-label="Введите заголовок"
@@ -457,7 +495,10 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                                             className="editor__text-edit"
                                             contentEditable
                                             onInput={e => onTextInput(e.currentTarget.innerText)}
-                                            onBlur={() => setNote(state => ({ ...state, Text: text }))}
+                                            onBlur={() => {
+                                                setNote(state => ({ ...state, Text: text }))
+                                                onTextSave(text)
+                                            }}
                                             suppressContentEditableWarning
                                             spellCheck
                                             aria-label="Текст заметки..."
@@ -491,7 +532,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                             </div>
 
                             <div className="modal__button-group" id="mobile">
-                                {id && <Button icon="archive" onClick={onArchiveClick} />}
+                                {id && <Button icon={note?.Archived ? 'unarchive' : 'archive'} onClick={onArchiveClick} />}
                                 {id && <Button icon="trash" onClick={onDeleteClick} />}
                             </div>
                         </div>

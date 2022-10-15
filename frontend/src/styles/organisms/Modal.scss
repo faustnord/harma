@@ -152,6 +152,8 @@
 }
 
 .checklist {
+    margin-bottom: 12px;
+
     &__item {
         display: flex;
         margin-bottom: 12px;
@@ -194,10 +196,6 @@
         &__footer {
             margin-top: 12px;
         }
-    }
-
-    .checklist {
-        margin-bottom: 12px;
     }
 
     #desktop {
