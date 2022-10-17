@@ -1,0 +1,8 @@
+.mobile-sidebar {
+    &__close-button {
+        position: absolute;
+        top: 24px;
+        left: 256px;
+        z-index: 1;
+    }
+}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { GetApi } from '../../api/api'
 import { Note, Tag } from '../../api/models'
 import Masonry from 'react-masonry-component'
@@ -6,6 +6,8 @@ import { Modal } from '../organisms/Modal'
 import { Card } from '../molecules/Card'
 import { Search } from '../atoms/Search'
 import { useParams } from 'react-router-dom'
+import { Context } from '../../context'
+import { Button } from '../atoms/Button'
 
 export const TaggedNotes = ({ title }: { title: string }) => {
     const params = useParams<{ id: string }>()
@@ -14,6 +16,8 @@ export const TaggedNotes = ({ title }: { title: string }) => {
     const [notes, setNotes] = useState<Note[]>()
     const [toggleModal, setToggleModal] = useState<boolean>()
     const [currentId, setCurrentId] = useState<number>()
+
+    const { context, setContext } = useContext(Context)
 
     // CALLBACKS
     const GetAllNotes = useCallback(() => {
@@ -38,10 +42,18 @@ export const TaggedNotes = ({ title }: { title: string }) => {
     return (
         <>
             <div className="header">
+                {context.screenSize !== 'desktop' && (
+                    <Button
+                        icon="burger"
+                        onClick={() => {
+                            setContext(state => ({ ...state, showSidebar: true }))
+                        }}
+                    />
+                )}
                 <Search />
             </div>
 
-            <Masonry className="notes" style={toggleModal ? { overflow: 'hidden' } : {}} options={{ transitionDuration: 200 }}>
+            <Masonry className="notes" options={{ transitionDuration: 200 }}>
                 {notes
                     ?.filter(note => !note.Archived)
                     .map(note => (

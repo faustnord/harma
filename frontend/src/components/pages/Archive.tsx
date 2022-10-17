@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { GetAllApi } from '../../api/api'
 import { Note } from '../../api/models'
 import Masonry from 'react-masonry-component'
 import { Modal } from '../organisms/Modal'
 import { Card } from '../molecules/Card'
 import { Search } from '../atoms/Search'
+import { Button } from '../atoms/Button'
+import { Context } from '../../context'
 
 export const Archive = ({ title }: { title: string }) => {
     // STATES
@@ -12,6 +14,8 @@ export const Archive = ({ title }: { title: string }) => {
     const [toggleModal, setToggleModal] = useState<boolean>()
     const [currentId, setCurrentId] = useState<number>()
     const [search, setSearch] = useState<string>()
+
+    const { context, setContext } = useContext(Context)
 
     // CALLBACKS
     const GetAllNotes = useCallback(() => {
@@ -37,10 +41,18 @@ export const Archive = ({ title }: { title: string }) => {
     return (
         <>
             <div className="header">
+                {context.screenSize !== 'desktop' && (
+                    <Button
+                        icon="burger"
+                        onClick={() => {
+                            setContext(state => ({ ...state, showSidebar: true }))
+                        }}
+                    />
+                )}
                 <Search onChange={e => setSearch(e.target.value)} />
             </div>
 
-            <Masonry className="notes" style={toggleModal ? { overflow: 'hidden' } : {}} options={{ transitionDuration: 200 }}>
+            <Masonry className="notes" options={{ transitionDuration: 200 }}>
                 {notes?.map(note => (
                     <Card
                         key={note.ID}
