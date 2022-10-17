@@ -21,7 +21,7 @@ export const App = () => {
                     context.showSidebar && <MobileSidebar onClose={() => setContext(state => ({ ...state, showSidebar: false }))} />
                 )}
 
-                <div className={context.scrollBlocked ? 'main scroll-blocked' : 'main'}>
+                <div className={context.scrollBlocked ? 'main scroll-blocked' : 'main'} style={{ height: window.innerHeight }}>
                     <Switch>
                         {routes.map((route, i) => (
                             <Route exact path={route.path} key={i + route.path}>
