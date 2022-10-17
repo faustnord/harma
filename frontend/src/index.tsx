@@ -2,12 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { App } from './components/App'
+import { ContextProvider } from './context'
 import reportWebVitals from './utils/reportWebVitals'
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
-            <App />
+            <ContextProvider>
+                <App />
+            </ContextProvider>
         </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
