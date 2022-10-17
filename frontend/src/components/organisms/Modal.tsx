@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { CreateApi, DeleteApi, GetAllApi, GetApi, UpdateApi } from '../../api/api'
 import { Color, Note, NoteItem, Tag } from '../../api/models'
+import { Context } from '../../context'
 import { Button } from '../atoms/Button'
 import { Checkbox } from '../atoms/Checkbox'
 import { Icon } from '../atoms/Icon'
@@ -20,6 +21,8 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
     const [tags, setTags] = useState<SelectOption[]>()
     const [colors, setColors] = useState<ColorSelectOption[]>()
     const newItemRef = useRef<HTMLDivElement>(null)
+
+    const { setContext } = useContext(Context)
 
     // EFFECTS
     useEffect(() => {
@@ -65,7 +68,16 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
         })
     }, [id])
 
+    useEffect(() => {
+        setContext(state => ({ ...state, scrollBlocked: true }))
+    }, [setContext])
+
     // HANDLERS
+    const onModalClose = () => {
+        onClose()
+        setContext(state => ({ ...state, scrollBlocked: false }))
+    }
+
     const onHeaderInput = (header: string) => {
         setHeader(header)
         if (!id) {
@@ -100,7 +112,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
             data: { ...note, UserID: 1, ColorID: 1 },
             onSuccess: () => {
                 onUpdate()
-                onClose()
+                onModalClose()
             }
         })
     }
@@ -113,7 +125,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                 data: { ...note },
                 onSuccess: () => {
                     onUpdate()
-                    onClose()
+                    onModalClose()
                 }
             })
         }
@@ -165,7 +177,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                 data: { ...note, Archived: !note?.Archived },
                 onSuccess: () => {
                     onUpdate()
-                    onClose()
+                    onModalClose()
                 }
             })
         }
@@ -178,7 +190,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                 id: id,
                 onSuccess: () => {
                     onUpdate()
-                    onClose()
+                    onModalClose()
                 }
             })
         }
@@ -354,7 +366,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
         <>
             {(id ? note : true) && (
                 <div className="modal">
-                    <div className="modal__background"></div>
+                    <div className="modal__background" onClick={onModalClose} />
                     <div className="modal__window">
                         <div className="modal__header">
                             <div className="modal__button-group" id="desktop">
@@ -379,7 +391,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
                             <div className="modal__button-group" id="desktop">
                                 <Button icon={note?.Pinned ? 'pin-solid' : 'pin'} onClick={onPinClick} />
-                                <Button icon={isEdited ? 'check' : 'close'} onClick={isEdited ? (id ? onSaveClick : onCreateClick) : onClose} />
+                                <Button icon={isEdited ? 'check' : 'close'} onClick={isEdited ? (id ? onSaveClick : onCreateClick) : onModalClose} />
                             </div>
 
                             <div id="mobile">
@@ -394,7 +406,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
 
                             <div className="modal__button-group" id="mobile">
                                 <Button icon={note?.Pinned ? 'pin-solid' : 'pin'} onClick={onPinClick} />
-                                <Button icon={isEdited ? 'check' : 'close'} onClick={isEdited ? (id ? onSaveClick : onCreateClick) : onClose} />
+                                <Button icon={isEdited ? 'check' : 'close'} onClick={isEdited ? (id ? onSaveClick : onCreateClick) : onModalClose} />
                             </div>
                         </div>
 
@@ -435,7 +447,7 @@ export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => v
                                                 />
                                                 <div className="editor__text">
                                                     <div
-                                                        className={noteItem.Done ? 'editor__text-edit checked' : 'editor__text-edit'}
+                                                        className={noteItem.Done ? 'editor__text-edit -checked' : 'editor__text-edit'}
                                                         contentEditable
                                                         onInput={e =>
                                                             noteItem.ID
