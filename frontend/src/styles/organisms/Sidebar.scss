@@ -6,6 +6,8 @@
     flex-direction: column;
     padding: 24px;
     position: fixed;
+    z-index: 1;
+    overflow-y: auto;
 
     &__item {
         border-radius: 8px;
@@ -33,21 +35,10 @@
 
     &__logo {
         margin: 0 0 20px 16px;
+        min-height: 36px;
     }
 
     &__icon {
         margin-right: 12px;
-    }
-}
-
-@media screen and (max-width: 1199px) {
-    .sidebar {
-        left: -240px;
-    }
-}
-
-@media screen and (max-width: 719px) {
-    .sidebar {
-        left: -240px;
     }
 }
