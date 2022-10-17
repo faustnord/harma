@@ -136,7 +136,7 @@
             outline: none;
         }
 
-        &.checked {
+        &.-checked {
             text-decoration: line-through !important;
             color: $gray-100;
         }
@@ -181,7 +181,7 @@
     display: flex;
 }
 
-@media screen and (max-width: 719px) {
+@media screen and (max-width: 720px) {
     .modal {
         padding: 12px;
 
