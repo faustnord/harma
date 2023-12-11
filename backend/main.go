@@ -40,7 +40,7 @@ func main() {
 	api.Db(db)
 
 	// Serving static files
-	e.Static("/", "public")
+	e.Static("/", "build")
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
