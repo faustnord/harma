@@ -9,7 +9,13 @@ import { Switcher } from '../atoms/Switcher'
 import { ColorSelect, ColorSelectOption } from '../molecules/ColorSelect'
 import { Select, SelectOption } from '../molecules/Select'
 
-export const Modal = ({ id, onClose, onUpdate }: { id?: number; onClose: () => void; onUpdate: () => void }) => {
+type ModalType = {
+    id?: number
+    onClose: () => void
+    onUpdate: () => void
+}
+
+export const Modal = ({ id, onClose, onUpdate }: ModalType) => {
     // STATES
     const [header, setHeader] = useState<string>('')
     const [text, setText] = useState<string>('')

@@ -19,19 +19,15 @@ export type IconName =
     | 'square'
     | 'unarchive'
 
-export const Icon = ({
-    name,
-    color = '#888888',
-    size = '20px',
-    style,
-    className
-}: {
+type IconType = {
     name: IconName
     color?: string
     size?: '16px' | '18px' | '20px'
     style?: React.CSSProperties
     className?: string
-}) => {
+}
+
+export const Icon = ({ name, color = '#888888', size = '20px', style, className }: IconType) => {
     switch (name) {
         case 'archive':
             return (

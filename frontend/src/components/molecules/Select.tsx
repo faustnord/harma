@@ -2,21 +2,20 @@ import { useState } from 'react'
 import { Button } from '../atoms/Button'
 import { IconName } from '../atoms/Icon'
 
-export type SelectOption = { label?: string; value?: number }
+export type SelectOption = {
+    label?: string
+    value?: number
+}
 
-export const Select = ({
-    icon,
-    value,
-    options,
-    onChange,
-    color
-}: {
+type SelectType = {
     icon: IconName
     value?: number
     options?: SelectOption[]
     onChange: (value: number) => void
     color?: string
-}) => {
+}
+
+export const Select = ({ icon, value, options, onChange, color }: SelectType) => {
     const [open, setOpen] = useState<boolean>(false)
     const [mouseOver, setMouseOver] = useState<boolean>(false)
 

@@ -1,6 +1,8 @@
 import { Icon } from './Icon'
 
-export const Search = ({ onChange }: { onChange?: React.ChangeEventHandler<HTMLInputElement> }) => {
+type SearchType = { onChange?: React.ChangeEventHandler<HTMLInputElement> }
+
+export const Search = ({ onChange }: SearchType) => {
     return (
         <div className="search">
             <input className="search__input" type="text" placeholder="Поиск" onChange={onChange} />

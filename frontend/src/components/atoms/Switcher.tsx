@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { Icon, IconName } from './Icon'
 
-export const Switcher = ({ tabs, value }: { tabs: { icon: IconName; onClick: React.MouseEventHandler<HTMLButtonElement> }[]; value: number }) => {
+type SwitcherType = {
+    tabs: { icon: IconName; onClick: React.MouseEventHandler<HTMLButtonElement> }[]
+    value: number
+}
+
+export const Switcher = ({ tabs, value }: SwitcherType) => {
     const [active, setActive] = useState<number>(value || 0)
     return (
         <div className="switcher">

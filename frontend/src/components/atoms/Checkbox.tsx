@@ -1,6 +1,11 @@
 import { Icon } from './Icon'
 
-export const Checkbox = ({ checked = false, onClick }: { checked?: boolean; onClick: React.MouseEventHandler<HTMLDivElement> }) => {
+type CheckboxType = {
+    checked?: boolean
+    onClick: React.MouseEventHandler<HTMLDivElement>
+}
+
+export const Checkbox = ({ checked = false, onClick }: CheckboxType) => {
     return (
         <div className="checkbox">
             <div className="checkbox__box" onClick={onClick}>

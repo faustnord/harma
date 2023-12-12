@@ -1,7 +1,12 @@
 import { Note } from '../../api/models'
 import { Icon } from '../atoms/Icon'
 
-export const Card = ({ note, onClick }: { note: Note; onClick: React.MouseEventHandler<HTMLDivElement> }) => {
+type CardType = {
+    note: Note
+    onClick: React.MouseEventHandler<HTMLDivElement>
+}
+
+export const Card = ({ note, onClick }: CardType) => {
     return (
         <div onClick={onClick} className="card" style={{ backgroundColor: note.Color?.Color, color: note.Color?.TextColor }}>
             {note.Pinned && (

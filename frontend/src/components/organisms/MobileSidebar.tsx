@@ -3,7 +3,9 @@ import { Context } from '../../context'
 import { Button } from '../atoms/Button'
 import { Sidebar } from './Sidebar'
 
-export const MobileSidebar = ({ onClose }: { onClose: () => void }) => {
+type MobileSidebarType = { onClose: () => void }
+
+export const MobileSidebar = ({ onClose }: MobileSidebarType) => {
     const { setContext } = useContext(Context)
 
     const onModalClose = () => {
