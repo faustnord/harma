@@ -11,6 +11,60 @@ const api = axios.create({
 // Тип тела ошибки запроса
 type ErrorData = { message: string }
 
+// Тип опции запроса
+type RequestOptionType<Model> = (keyof Model)[] | keyof Model | string | string[]
+
+// Тип функции приведения опций
+type ToOptionsType<Model> = {
+    expand?: RequestOptionType<Model>
+    filter?: RequestOptionType<Model>
+    sort?: RequestOptionType<Model>
+}
+
+// Тип функции получения одной записи
+type GetApiType<Model> = {
+    model: keyof Models
+    id: number
+    onSuccess: (res: Model) => void
+    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
+    expand?: RequestOptionType<Model>
+}
+
+// Тип функции получения множества записей
+type GetAllApiType<Model> = {
+    model: keyof Models
+    onSuccess: (res: Model[]) => void
+    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
+    expand?: RequestOptionType<Model>
+    filter?: RequestOptionType<Model>
+    sort?: RequestOptionType<Model>
+}
+
+// Тип функции создания записи
+type CreateApiType<Model> = {
+    model: keyof Models
+    data: Model
+    onSuccess?: (res: Model) => void
+    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
+}
+
+// Тип функции обновления записи
+type UpdateApiType<Model> = {
+    model: keyof Models
+    id: number
+    data: Model
+    onSuccess?: (res: Model) => void
+    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
+}
+
+// Тип функции удаления записи
+type DeleteApiType = {
+    model: keyof Models
+    id: number
+    onSuccess?: (res: string) => void
+    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
+}
+
 // Приведение названия модели к формату, пригодному для строки запроса
 const toURL = (string: string): string => {
     let snakeCaseStr = string
@@ -26,17 +80,9 @@ const toURL = (string: string): string => {
 }
 
 // Приведение опций запроса к формату, пригодному для строки запроса
-const toOptions = <Model>({
-    expand,
-    filter,
-    sort
-}: {
-    expand?: (keyof Model)[] | keyof Model | string | string[]
-    filter?: (keyof Model)[] | keyof Model | string | string[]
-    sort?: (keyof Model)[] | keyof Model | string | string[]
-}): string => {
+const toOptions = <Model>({ expand, filter, sort }: ToOptionsType<Model>): string => {
     let options: string | undefined
-    const toOption = (option: (keyof Model)[] | keyof Model | string | string[]): string => {
+    const toOption = (option: RequestOptionType<Model>): string => {
         if (typeof option === 'string') {
             return option
         } else if (Array.isArray(option)) {
@@ -57,93 +103,35 @@ const toOptions = <Model>({
 }
 
 /** Получение одной записи */
-export const GetApi = <Model>({
-    model,
-    id,
-    onSuccess,
-    onError,
-    expand
-}: {
-    model: keyof Models
-    id: number
-    onSuccess: (res: Model) => void
-    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
-    expand?: (keyof Model)[] | keyof Model | string | string[]
-}) => {
+export const GetApi = <Model>({ model, id, onSuccess, onError, expand }: GetApiType<Model>) => {
     api.get(`get/${toURL(model)}/${id}${toOptions<Model>({ expand })}`)
         .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateModel<Model>({ name: model, data: res.data })))
         .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
 
 /** Получение множества записей */
-export const GetAllApi = <Model>({
-    model,
-    onSuccess,
-    onError,
-    expand,
-    filter,
-    sort
-}: {
-    model: keyof Models
-    onSuccess: (res: Model[]) => void
-    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
-    expand?: (keyof Model)[] | keyof Model | string | string[]
-    filter?: (keyof Model)[] | keyof Model | string | string[]
-    sort?: (keyof Model)[] | keyof Model | string | string[]
-}) => {
+export const GetAllApi = <Model>({ model, onSuccess, onError, expand, filter, sort }: GetAllApiType<Model>) => {
     api.get(`get_all/${toURL(model)}${toOptions<Model>({ expand, filter, sort })}`)
         .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateModel<Model[]>({ name: model, data: res.data })))
         .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
 
 /** Создание записи */
-export const CreateApi = <Model>({
-    model,
-    data,
-    onSuccess,
-    onError
-}: {
-    model: keyof Models
-    data: Model
-    onSuccess?: (res: Model) => void
-    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
-}) => {
+export const CreateApi = <Model>({ model, data, onSuccess, onError }: CreateApiType<Model>) => {
     api.post(`create/${toURL(model)}`, data)
         .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateModel<Model>({ name: model, data: res.data })))
         .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
 
 /** Обновление записи */
-export const UpdateApi = <Model>({
-    model,
-    id,
-    data,
-    onSuccess,
-    onError
-}: {
-    model: keyof Models
-    id: number
-    data: Model
-    onSuccess?: (res: Model) => void
-    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
-}) => {
+export const UpdateApi = <Model>({ model, id, data, onSuccess, onError }: UpdateApiType<Model>) => {
     api.put(`update/${toURL(model)}/${id}`, data)
         .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateModel<Model>({ name: model, data: res.data })))
         .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
 }
 
 /** Удаление записи */
-export const DeleteApi = ({
-    model,
-    id,
-    onSuccess,
-    onError
-}: {
-    model: keyof Models
-    id: number
-    onSuccess?: (res: string) => void
-    onError?: (err: AxiosResponse<ErrorData> | undefined) => void
-}) => {
+export const DeleteApi = ({ model, id, onSuccess, onError }: DeleteApiType) => {
     api.delete(`delete/${toURL(model)}/${id}`)
         .then((res: AxiosResponse<unknown>) => onSuccess && onSuccess(validateString(res.data)))
         .catch((err: AxiosError<ErrorData>) => (onError ? onError(err.response) : console.error(err)))
